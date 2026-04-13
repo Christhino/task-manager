@@ -35,7 +35,7 @@ task-manager/
 
 ---
 
-# 🚀 Installation & démarrage
+# Installation & démarrage
 
 ## 1. Cloner le projet
 
@@ -228,16 +228,120 @@ Interface minimaliste permettant :
 ---
 
 # Tests
+# Tests Backend (Vitest)
 
-Lancer les tests backend :
+Le projet inclut des **tests unitaires et d’intégration légers** afin de valider le comportement de l’API.
+
+Les tests sont réalisés avec **Vitest**, un framework moderne, rapide et compatible avec TypeScript.
+
+---
+
+# Installation des dépendances
+
+```bash
+npm install -D vitest --workspace=apps/api
+```
+
+---
+
+# Structure des tests
+
+```bash
+apps/api/tests/
+├── cursor.service.test.ts   # Tests unitaires du cursor
+├── task.service.test.ts     # Tests unitaires du service (mock repository)
+└── tasks.route.test.ts      # Tests HTTP (routes API)
+```
+
+---
+
+# 🚀 Lancer les tests
+
+## Mode normal
 
 ```bash
 npm run test --workspace=apps/api
 ```
 
+## Mode watch (recommandé en dev)
+
+```bash
+npm run test:watch --workspace=apps/api
+```
+
 ---
 
-# 👨‍💻 Auteur
+# Types de tests implémentés
+
+## 1. Cursor Service (tests unitaires)
+
+Validation de la logique de pagination :
+
+* encodage d’un cursor
+* décodage du cursor
+* gestion des erreurs (cursor invalide)
+
+---
+
+## 2. Task Service (tests unitaires)
+
+Tests de la logique métier avec **mock du repository** :
+
+* récupération d’une tâche
+* gestion des erreurs (`TASK_NOT_FOUND`)
+* suppression d’une tâche
+
+👉 Ces tests permettent d’isoler la logique métier de la base de données.
+
+---
+
+## 3. Routes API (tests HTTP)
+
+Tests via `createApp()` sans lancer de serveur réel :
+
+* création d’une tâche (`POST /tasks`)
+* validation des erreurs (`400`)
+* récupération des tâches (`GET /tasks`)
+* validation des query params
+
+---
+
+# Exemple de test
+
+```ts
+import { describe, expect, it } from 'vitest'
+import { createApp } from '../src/app'
+
+describe('tasks.route', () => {
+  const app = createApp()
+
+  it('should create a task', async () => {
+    const response = await app.request('/tasks', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ title: 'Test task' }),
+    })
+
+    expect(response.status).toBe(201)
+  })
+})
+```
+
+---
+
+# 🎯 Objectif des tests
+
+Les tests couvrent les points critiques :
+
+* validation des entrées (Zod)
+* gestion des erreurs
+* logique métier (service)
+* pagination (cursor)
+* comportement HTTP global
+
+---
+
+# 👨Auteur
 
 Christhino Mintsaniaina
 Fullstack Developer – JavaScript / TypeScript / Python
