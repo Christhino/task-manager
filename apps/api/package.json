@@ -6,22 +6,27 @@
   "scripts": {
     "dev": "tsx src/index.ts",
     "build": "tsc",
-    "test": "vitest run",
-    "test:watch": "vitest"
+    "test": "vitest run --sequence.concurrent false",
+    "test:watch": "vitest --sequence.concurrent false",
+    "coverage": "vitest run --coverage --sequence.concurrent false"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "module",
   "devDependencies": {
+    "@esbuild/darwin-arm64": "^0.27.7",
     "@types/better-sqlite3": "^7.6.13",
     "@types/node": "^25.6.0",
+    "@vitest/coverage-v8": "^4.1.4",
+    "esbuild": "^0.27.7",
     "tsx": "^4.21.0",
     "typescript": "^6.0.2",
     "vitest": "^4.1.4"
   },
   "dependencies": {
     "@hono/node-server": "^1.19.13",
+    "@hono/swagger-ui": "^0.6.1",
     "better-sqlite3": "^12.9.0"
   }
 }

@@ -63,4 +63,127 @@ describe('tasks.route', () => {
     expect(body.error).toBeDefined()
     expect(body.error.code).toBe('VALIDATION_ERROR')
   })
+
+  it('should return 200 for GET /tasks/:id', async () => {
+    const createResponse = await app.request('/tasks', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        title: 'Task to fetch',
+        status: 'todo',
+      }),
+    })
+
+    const createdTask = await createResponse.json()
+
+    const response = await app.request(`/tasks/${createdTask.id}`)
+
+    expect(response.status).toBe(200)
+
+    const body = await response.json()
+
+    expect(body.id).toBe(createdTask.id)
+    expect(body.title).toBe('Task to fetch')
+  })
+
+  it('should return 404 for GET /tasks/:id when task does not exist', async () => {
+    const response = await app.request('/tasks/unknown-id')
+
+    expect(response.status).toBe(404)
+
+    const body = await response.json()
+
+    expect(body.error.code).toBe('TASK_NOT_FOUND')
+  })
+
+  it('should return 200 for PUT /tasks/:id', async () => {
+    const createResponse = await app.request('/tasks', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        title: 'Task to update',
+        status: 'todo',
+      }),
+    })
+
+    const createdTask = await createResponse.json()
+
+    const response = await app.request(`/tasks/${createdTask.id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        status: 'done',
+        title: 'Task updated',
+      }),
+    })
+
+    expect(response.status).toBe(200)
+
+    const body = await response.json()
+
+    expect(body.id).toBe(createdTask.id)
+    expect(body.status).toBe('done')
+    expect(body.title).toBe('Task updated')
+  })
+
+  it('should return 404 for PUT /tasks/:id when task does not exist', async () => {
+    const response = await app.request('/tasks/missing-id', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        status: 'done',
+      }),
+    })
+
+    expect(response.status).toBe(404)
+
+    const body = await response.json()
+
+    expect(body.error.code).toBe('TASK_NOT_FOUND')
+  })
+
+  it('should return 200 for DELETE /tasks/:id', async () => {
+    const createResponse = await app.request('/tasks', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        title: 'Task to delete',
+        status: 'todo',
+      }),
+    })
+
+    const createdTask = await createResponse.json()
+
+    const response = await app.request(`/tasks/${createdTask.id}`, {
+      method: 'DELETE',
+    })
+
+    expect(response.status).toBe(200)
+
+    const body = await response.json()
+
+    expect(body).toEqual({ success: true })
+  })
+
+  it('should return 404 for DELETE /tasks/:id when task does not exist', async () => {
+    const response = await app.request('/tasks/missing-id', {
+      method: 'DELETE',
+    })
+
+    expect(response.status).toBe(404)
+
+    const body = await response.json()
+
+    expect(body.error.code).toBe('TASK_NOT_FOUND')
+  })
 })
