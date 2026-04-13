@@ -9,27 +9,43 @@ function App() {
   const [search, setSearch] = useState('')
   const [sortBy, setSortBy] = useState<'createdAt' | 'dueDate' | 'title'>('createdAt')
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc')
+
+  const handleResetFilters = () => {
+    setStatus('')
+    setSearch('')
+    setSortBy('createdAt')
+    setSortOrder('desc')
+  }
+
   return (
     <main className="container">
       <h1>Task Manager</h1>
-      <TaskForm />
-      <TaskFilters
-        status={status}
-        search={search}
-        sortBy={sortBy}
-        sortOrder={sortOrder}
-        onStatusChange={setStatus}
-        onSearchChange={setSearch}
-        onSortByChange={setSortBy}
-        onSortOrderChange={setSortOrder}
-      />
 
-      <TaskList
-        status={status}
-        search={search}
-        sortBy={sortBy}
-        sortOrder={sortOrder}
-      />
+      <div className="layout">
+        <aside className="sidebar">
+          <TaskForm />
+          <TaskFilters
+            status={status}
+            search={search}
+            sortBy={sortBy}
+            sortOrder={sortOrder}
+            onStatusChange={setStatus}
+            onSearchChange={setSearch}
+            onSortByChange={setSortBy}
+            onSortOrderChange={setSortOrder}
+            onReset={handleResetFilters}
+          />
+        </aside>
+
+        <section className="content">
+          <TaskList
+            status={status}
+            search={search}
+            sortBy={sortBy}
+            sortOrder={sortOrder}
+          />
+        </section>
+      </div>
     </main>
   )
 }

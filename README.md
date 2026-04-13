@@ -328,7 +328,25 @@ describe('tasks.route', () => {
 ```
 
 ---
+#  Swagger
 
+API Documentation (Swagger)
+Swagger UI
+Une documentation interactive de l’API est disponible via Swagger UI.
+
+Elle permet de :
+
+* explorer les endpoints
+* tester les requêtes directement depuis le navigateur
+* visualiser les paramètres (filters, pagination, etc.)
+* tester les payloads de création et mise à jour
+
+Accès
+Une fois le backend lancé :
+```bash
+npm run dev:api
+```
+* API → [http://localhost:3000](http://localhost:3000/tasks/swagger)
 # 🎯 Objectif des tests
 
 Les tests couvrent les points critiques :

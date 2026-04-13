@@ -9,13 +9,20 @@ type Props = {
   sortOrder: 'asc' | 'desc'
 }
 
-export function TaskList({ status, search }: Props) {
-  const { data, isLoading, isError, fetchNextPage, hasNextPage, isFetchingNextPage } = useTasks({
+export function TaskList({ status, search, sortBy, sortOrder }: Props) {
+  const {
+    data,
+    isLoading,
+    isError,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useTasks({
     status: status || undefined,
     search: search || undefined,
-    sortBy: 'createdAt',
-    sortOrder: 'desc',
-    limit: 3,
+    sortBy,
+    sortOrder,
+    limit: 2,
   })
 
   const tasks = data?.pages.flatMap((page) => page.data) ?? []

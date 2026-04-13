@@ -12,8 +12,8 @@ type Props = {
   onSearchChange: (value: string) => void
   onSortByChange: (value: SortBy) => void
   onSortOrderChange: (value: SortOrder) => void
+  onReset: () => void
 }
-
 export function TaskFilters({
   status,
   search,
@@ -23,6 +23,7 @@ export function TaskFilters({
   onSearchChange,
   onSortByChange,
   onSortOrderChange,
+  onReset,
 }: Props) {
   return (
     <div className="card">
@@ -42,18 +43,20 @@ export function TaskFilters({
         <option value="done">Done</option>
       </select>
 
-      {/* 🔥 SORT BY */}
       <select value={sortBy} onChange={(e) => onSortByChange(e.target.value as SortBy)}>
         <option value="createdAt">Created date</option>
         <option value="dueDate">Due date</option>
         <option value="title">Title</option>
       </select>
 
-      {/* 🔥 ORDER */}
       <select value={sortOrder} onChange={(e) => onSortOrderChange(e.target.value as SortOrder)}>
         <option value="desc">Descending</option>
         <option value="asc">Ascending</option>
       </select>
+
+      <button type="button" className="secondary-button" onClick={onReset}>
+        Reset filters
+      </button>
     </div>
   )
 }
