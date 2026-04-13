@@ -1,22 +1,19 @@
 import { Hono } from 'hono'
-import { tasksRoute } from './routes/tasks.route'
-import { errorMiddleware } from './middleware/error.middleware'
-import { createDb } from './db/database'
-import type Database from 'better-sqlite3'
+import { cors } from 'hono/cors'
+import { tasksRoute } from './routes/tasks.route.js'
+import { errorMiddleware } from './middleware/error.middleware.js'
 
-type AppBindings = {
-  Variables: {
-    db: Database.Database
-  }
-}
+export function createApp() {
+  const app = new Hono()
 
-export function createApp(db: Database.Database = createDb()) {
-  const app = new Hono<AppBindings>()
-
-  app.use('*', async (c, next) => {
-    c.set('db', db)
-    await next()
-  })
+  app.use(
+    '*',
+    cors({
+      origin: 'http://localhost:5173',
+      allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+      allowHeaders: ['Content-Type', 'Authorization'],
+    })
+  )
 
   app.get('/', (c) => c.json({ message: 'Task API is running' }))
   app.route('/tasks', tasksRoute)
