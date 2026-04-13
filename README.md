@@ -346,7 +346,7 @@ Une fois le backend lancé :
 ```bash
 npm run dev:api
 ```
-* API → [http://localhost:3000](http://localhost:3000/tasks/swagger)
+* documentation → [http://localhost:3000/tasks/swagger](http://localhost:3000/tasks/swagger)
 # 🎯 Objectif des tests
 
 Les tests couvrent les points critiques :
