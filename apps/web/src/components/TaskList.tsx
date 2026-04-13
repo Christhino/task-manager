@@ -5,6 +5,8 @@ import type { TaskStatus } from '../types/task'
 type Props = {
   status: TaskStatus | ''
   search: string
+  sortBy: 'createdAt' | 'dueDate' | 'title'
+  sortOrder: 'asc' | 'desc'
 }
 
 export function TaskList({ status, search }: Props) {
@@ -13,7 +15,7 @@ export function TaskList({ status, search }: Props) {
     search: search || undefined,
     sortBy: 'createdAt',
     sortOrder: 'desc',
-    limit: 5,
+    limit: 3,
   })
 
   const tasks = data?.pages.flatMap((page) => page.data) ?? []

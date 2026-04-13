@@ -7,7 +7,8 @@ import type { TaskStatus } from './types/task'
 function App() {
   const [status, setStatus] = useState<TaskStatus | ''>('')
   const [search, setSearch] = useState('')
-
+  const [sortBy, setSortBy] = useState<'createdAt' | 'dueDate' | 'title'>('createdAt')
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc')
   return (
     <main className="container">
       <h1>Task Manager</h1>
@@ -15,10 +16,20 @@ function App() {
       <TaskFilters
         status={status}
         search={search}
+        sortBy={sortBy}
+        sortOrder={sortOrder}
         onStatusChange={setStatus}
         onSearchChange={setSearch}
+        onSortByChange={setSortBy}
+        onSortOrderChange={setSortOrder}
       />
-      <TaskList status={status} search={search} />
+
+      <TaskList
+        status={status}
+        search={search}
+        sortBy={sortBy}
+        sortOrder={sortOrder}
+      />
     </main>
   )
 }
